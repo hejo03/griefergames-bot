@@ -5,3 +5,4 @@ dist/
 launcher_profiles.json
 launcher_accounts.json
 tslint.json
+*-cache.json
