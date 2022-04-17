@@ -101,9 +101,7 @@ async function run(bot: Bot, options: ConnectorOptions): Promise<void> {
   await delay(500);
 
   const [yaw, pitch] = lookDirection;
-  await new Promise(resolve => {
-    bot.client.look(yaw, pitch, true, resolve);
-  });
+  await bot.client.look(yaw, pitch, true);
   await delay(500);
 
   bot.client.setControlState('sprint', true);
@@ -132,9 +130,7 @@ async function run(bot: Bot, options: ConnectorOptions): Promise<void> {
 
   const [portalX, portalY, portalZ] = options.portal;
   const portalPos = vec3([portalX, portalY, portalZ]);
-  await new Promise(resolve => {
-    bot.client.lookAt(portalPos, true, resolve);
-  });
+  await bot.client.lookAt(portalPos, true);
   bot.client.setControlState('jump', true);
   await delay(25);
   bot.client.setControlState('sprint', true);
