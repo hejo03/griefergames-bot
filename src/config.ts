@@ -15,8 +15,8 @@ export const config = {
   REDSTONE_REGEXP: /^- Redstone (?:ist wieder )?(\w+)\!?$/,
   ITEMCLEAR_REGEXP: /^\[GrieferGames\] Warnung! Die auf dem Boden liegenden Items werden in (\w{2}) Sekunden entfernt\!$/,
   MOBREMOVER_REGEXP: /^\[MobRemover\] Achtung, in (\w{1}) Minuten werden alle Tiere gelöscht\.$/,
-  TPA_REGEXP: /^([A-Za-z\-]+\+?) \u2503 (\u007E?\u0021?\w{1,16}) fragt, ob er sich zu dir teleportieren darf.$/,
-  TPAHERE_REGEXP: /^([A-Za-z\\-]+\+?) \u2503 (\u007E?\u0021?\w{1,16}) fragt, ob du dich zu ihm teleportierst.$/,
+  TPA_REGEXP: /^([A-Za-z\-]+\+?) \u2503 (\u007E?\u0021?\w{1,16}) möchte sich zu dir teleportieren.$/,
+  TPAHERE_REGEXP: /^([A-Za-z\\-]+\+?) \u2503 (\u007E?\u0021?\w{1,16}) möchte, dass du dich zu der Person teleportierst.$/,
 
   // Coded expressions
   // These only match if tested against coded messages.
