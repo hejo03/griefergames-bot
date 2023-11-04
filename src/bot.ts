@@ -52,6 +52,12 @@ class Bot extends EventEmitter {
     };
 
     this.client = mineflayer.createBot(botOptions);
+    this.client.on('login', () => {
+      this.client.once('spawn', () => {
+        this.registerEvents();
+        this.installPlugins();
+      });
+    });
   }
 
   public isOnline(): boolean {
