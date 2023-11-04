@@ -166,18 +166,17 @@ class Bot extends EventEmitter {
       this.emit('kicked', reason, loggedIn);
     });
 
-    const chatPatternOpt = {};
-    this.client.addChatPattern('msg', config.MSG_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('plotchat', config.PLOTCHAT_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('chatModeAlert', config.CHATMODE_ALERT_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('slowChatAlert', config.SLOWCHAT_ALERT_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('commandSpamAlert', config.COMMANDSPAM_ALERT_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('itemClearAlert', config.ITEMCLEAR_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('mobClearAlert', config.MOBREMOVER_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('redstoneAlert', config.REDSTONE_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('tpa', config.TPA_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('tpahere', config.TPAHERE_REGEXP, chatPatternOpt);
-    this.client.addChatPattern('moneydrop', config.MONEYDROP_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('msg', config.MSG_REGEXP);
+    this.client.addChatPattern('plotchat', config.PLOTCHAT_REGEXP);
+    this.client.addChatPattern('chatModeAlert', config.CHATMODE_ALERT_REGEXP);
+    this.client.addChatPattern('slowChatAlert', config.SLOWCHAT_ALERT_REGEXP);
+    this.client.addChatPattern('commandSpamAlert', config.COMMANDSPAM_ALERT_REGEXP);
+    this.client.addChatPattern('itemClearAlert', config.ITEMCLEAR_REGEXP);
+    this.client.addChatPattern('mobClearAlert', config.MOBREMOVER_REGEXP);
+    this.client.addChatPattern('redstoneAlert', config.REDSTONE_REGEXP);
+    this.client.addChatPattern('tpa', config.TPA_REGEXP);
+    this.client.addChatPattern('tpahere', config.TPAHERE_REGEXP);
+    this.client.addChatPattern('moneydrop', config.MONEYDROP_REGEXP);
 
     this.client.on('msg', (rank: string, username: string, message: string) => {
       this.emit('msg', rank, username, message);
@@ -253,14 +252,12 @@ class Bot extends EventEmitter {
       this.emit('redstoneAlert', redstone);
     });
 
-    this.client.on('connect', () => {
-      this.client.once('spawn', () => {
-        this.registerEvents();
-        this.installPlugins();
-        // Ready once fully connected
-        // and spawned in hub.
-        this.emit('ready');
-      });
+    this.client.once('spawn', () => {
+      this.registerEvents();
+      this.installPlugins();
+      // Ready once fully connected
+      // and spawned in hub.
+      this.emit('ready');
     });
 
     this.client.on('playerCollect', (collector: any, collected: any) => {
