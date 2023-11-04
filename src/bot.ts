@@ -169,17 +169,18 @@ class Bot extends EventEmitter {
       this.emit('kicked', reason, loggedIn);
     });
 
-    this.client.addChatPattern(config.MSG_REGEXP, 'msg');
-    this.client.addChatPattern(config.PLOTCHAT_REGEXP, 'plotchat');
-    this.client.addChatPattern(config.CHATMODE_ALERT_REGEXP, 'chatModeAlert');
-    this.client.addChatPattern(config.SLOWCHAT_ALERT_REGEXP, 'slowChatAlert');
-    this.client.addChatPattern(config.COMMANDSPAM_ALERT_REGEXP, 'commandSpamAlert');
-    this.client.addChatPattern(config.ITEMCLEAR_REGEXP, 'itemClearAlert');
-    this.client.addChatPattern(config.MOBREMOVER_REGEXP, 'mobClearAlert');
-    this.client.addChatPattern(config.REDSTONE_REGEXP, 'redstoneAlert');
-    this.client.addChatPattern(config.TPA_REGEXP, 'tpa');
-    this.client.addChatPattern(config.TPAHERE_REGEXP, 'tpahere');
-    this.client.addChatPattern(config.MONEYDROP_REGEXP, 'moneydrop');
+    const chatPatternOpt = {};
+    this.client.addChatPattern('msg', config.MSG_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('plotchat', config.PLOTCHAT_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('chatModeAlert', config.CHATMODE_ALERT_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('slowChatAlert', config.SLOWCHAT_ALERT_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('commandSpamAlert', config.COMMANDSPAM_ALERT_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('itemClearAlert', config.ITEMCLEAR_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('mobClearAlert', config.MOBREMOVER_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('redstoneAlert', config.REDSTONE_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('tpa', config.TPA_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('tpahere', config.TPAHERE_REGEXP, chatPatternOpt);
+    this.client.addChatPattern('moneydrop', config.MONEYDROP_REGEXP, chatPatternOpt);
 
     this.client.on('msg', (rank: string, username: string, message: string) => {
       this.emit('msg', rank, username, message);
