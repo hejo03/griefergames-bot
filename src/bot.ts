@@ -175,28 +175,28 @@ class Bot extends EventEmitter {
     this.client.addChatPattern('tpahere', config.TPAHERE_REGEXP, chatPatternOpt);
     this.client.addChatPattern('moneydrop', config.MONEYDROP_REGEXP, chatPatternOpt);
 
-    this.client.on('chat:msg', (rank: string, username: string, message: string) => {
-      this.emit('msg', rank, username, message);
+    this.client.on('chat:msg', (result: string[]) => {
+      this.emit('msg', result[0], result[1], result[2]);
     });
 
-    this.client.on('chat:plotchat', (plotID: string, rank: string, username: string, message: string) => {
-      this.emit('plotchat', plotID, rank, username, message);
+    this.client.on('chat:plotchat', (result: string[]) => {
+      this.emit('plotchat', result[0], result[1], result[2], result[3]);
     });
 
-    this.client.on('chat:tpa', (rank: string, username: string) => {
-      this.emit('tpa', rank, username);
+    this.client.on('chat:tpa', (result: string[]) => {
+      this.emit('tpa', result[0], result[1]);
     });
 
-    this.client.on('chat:tpahere', (rank: string, username: string) => {
-      this.emit('tpahere', rank, username);
+    this.client.on('chat:tpahere', (result: string[]) => {
+      this.emit('tpahere', result[0], result[1]);
     });
 
-    this.client.on('chat:moneydrop', (amount: string) => {
-      this.emit('moneydrop', parseFloat(amount.replace(/,/g, '')));
+    this.client.on('chat:moneydrop', (result: string[]) => {
+      this.emit('moneydrop', parseFloat(result[0].replace(/,/g, '')));
     });
 
-    this.client.on('chat:chatModeAlert', (rank: string, username: string, change: string) => {
-      switch (change) {
+    this.client.on('chat:chatModeAlert', (result: string[]) => {
+      switch (result[2]) {
         case 'auf normal gestellt':
           this.currentChatMode = ChatMode.NORMAL;
           this.chatDelay = config.NORMAL_COOLDOWN;
@@ -211,7 +211,7 @@ class Bot extends EventEmitter {
           // TODO: maybe emit an event here
           break;
       }
-      this.emit('chatModeAlert', rank, username, change);
+      this.emit('chatModeAlert', result[0], result[1], result[2]);
     });
 
     this.client.on('chat:slowChatAlert', () => {
@@ -231,19 +231,19 @@ class Bot extends EventEmitter {
       console.warn('Sent commands too quickly!');
     });
 
-    this.client.on('chat:itemClearAlert', (seconds: string) => {
-      this.emit('itemClearAlert', parseInt(seconds));
+    this.client.on('chat:itemClearAlert', (result: string[]) => {
+      this.emit('itemClearAlert', parseInt(result[0]));
     });
 
-    this.client.on('chat:mobClearAlert', (minutes: string) => {
-      this.emit('mobClearAlert', parseInt(minutes));
+    this.client.on('chat:mobClearAlert', (result: string[]) => {
+      this.emit('mobClearAlert', parseInt(result[0]));
     });
 
-    this.client.on('chat:redstoneAlert', (mode: string) => {
+    this.client.on('chat:redstoneAlert', (result: string[]) => {
       let redstone = '';
-      if (mode.includes('deaktiviert')) {
+      if (result[0].includes('deaktiviert')) {
         redstone = RedstoneMode.OFF;
-      } else if (mode.includes('aktiviert')) {
+      } else if (result[0].includes('aktiviert')) {
         redstone = RedstoneMode.ON;
       }
       this.emit('redstoneAlert', redstone);
