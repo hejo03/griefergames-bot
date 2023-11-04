@@ -259,8 +259,8 @@ class Bot extends EventEmitter {
     });
     this.client.on('login', () => {
       this.client.once('spawn', () => {
-        this.registerEvents();
-        this.installPlugins();
+        // this.registerEvents();
+        // this.installPlugins();
         // Ready once fully connected
         // and spawned in hub.
         this.emit('ready');
@@ -386,6 +386,7 @@ class Bot extends EventEmitter {
         }
       }
     });
+    this.emit('ready');
   }
 
   private getTimeSinceLastMessage(): number {
