@@ -61,6 +61,7 @@ class Bot extends EventEmitter {
   }
 
   public isOnline(): boolean {
+    console.log(this.connectionStatus);
     return this.client && this.connectionStatus === ConnectionStatus.LOGGED_IN;
   }
 
@@ -147,16 +148,6 @@ class Bot extends EventEmitter {
 
     forward('spawn');
     forward('death');
-
-    // Emitted when the client logs into the server.
-    // The bot has not actually entered the world yet,
-    // when login is called.
-    this.client.on('login', () => {
-      // Update connection status.
-      this.setConnectionStatus(ConnectionStatus.LOGGED_IN);
-
-      this.emit('login');
-    });
 
     // Emitted when the client's connection to the server ends.
     this.client.on('end', () => {
@@ -256,15 +247,6 @@ class Bot extends EventEmitter {
         redstone = RedstoneMode.ON;
       }
       this.emit('redstoneAlert', redstone);
-    });
-    this.client.on('login', () => {
-      this.client.once('spawn', () => {
-        // this.registerEvents();
-        // this.installPlugins();
-        // Ready once fully connected
-        // and spawned in hub.
-        this.emit('ready');
-      });
     });
 
     this.client.on('playerCollect', (collector: any, collected: any) => {
@@ -386,6 +368,9 @@ class Bot extends EventEmitter {
         }
       }
     });
+    // Update connection status.
+    this.setConnectionStatus(ConnectionStatus.LOGGED_IN);
+    this.emit('login');
     this.emit('ready');
   }
 
