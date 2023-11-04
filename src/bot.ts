@@ -176,27 +176,27 @@ class Bot extends EventEmitter {
     this.client.addChatPattern('moneydrop', config.MONEYDROP_REGEXP, chatPatternOpt);
 
     this.client.on('chat:msg', (result: string[]) => {
-      this.emit('msg', result[0], result[1], result[2]);
+      this.emit('msg', result[0][0], result[0][1], result[0][2]);
     });
 
     this.client.on('chat:plotchat', (result: string[]) => {
-      this.emit('plotchat', result[0], result[1], result[2], result[3]);
+      this.emit('plotchat', result[0][0], result[0][1], result[0][2], result[0][3]);
     });
 
     this.client.on('chat:tpa', (result: string[]) => {
-      this.emit('tpa', result[0], result[1]);
+      this.emit('tpa', result[0][0], result[0][1]);
     });
 
     this.client.on('chat:tpahere', (result: string[]) => {
-      this.emit('tpahere', result[0], result[1]);
+      this.emit('tpahere', result[0][0], result[0][1]);
     });
 
     this.client.on('chat:moneydrop', (result: string[]) => {
-      this.emit('moneydrop', parseFloat(result[0].replace(/,/g, '')));
+      this.emit('moneydrop', parseFloat(result[0][0].replace(/,/g, '')));
     });
 
     this.client.on('chat:chatModeAlert', (result: string[]) => {
-      switch (result[2]) {
+      switch (result[0][2]) {
         case 'auf normal gestellt':
           this.currentChatMode = ChatMode.NORMAL;
           this.chatDelay = config.NORMAL_COOLDOWN;
@@ -211,7 +211,7 @@ class Bot extends EventEmitter {
           // TODO: maybe emit an event here
           break;
       }
-      this.emit('chatModeAlert', result[0], result[1], result[2]);
+      this.emit('chatModeAlert', result[0][0], result[0][1], result[0][2]);
     });
 
     this.client.on('chat:slowChatAlert', () => {
@@ -232,18 +232,18 @@ class Bot extends EventEmitter {
     });
 
     this.client.on('chat:itemClearAlert', (result: string[]) => {
-      this.emit('itemClearAlert', parseInt(result[0]));
+      this.emit('itemClearAlert', parseInt(result[0][0]));
     });
 
     this.client.on('chat:mobClearAlert', (result: string[]) => {
-      this.emit('mobClearAlert', parseInt(result[0]));
+      this.emit('mobClearAlert', parseInt(result[0][0]));
     });
 
     this.client.on('chat:redstoneAlert', (result: string[]) => {
       let redstone = '';
-      if (result[0].includes('deaktiviert')) {
+      if (result[0][0].includes('deaktiviert')) {
         redstone = RedstoneMode.OFF;
-      } else if (result[0].includes('aktiviert')) {
+      } else if (result[0][0].includes('aktiviert')) {
         redstone = RedstoneMode.ON;
       }
       this.emit('redstoneAlert', redstone);
