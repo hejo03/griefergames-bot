@@ -178,27 +178,27 @@ class Bot extends EventEmitter {
     this.client.addChatPattern('tpahere', config.TPAHERE_REGEXP);
     this.client.addChatPattern('moneydrop', config.MONEYDROP_REGEXP);
 
-    this.client.on('msg', (rank: string, username: string, message: string) => {
+    this.client.on('chat:msg', (rank: string, username: string, message: string) => {
       this.emit('msg', rank, username, message);
     });
 
-    this.client.on('plotchat', (plotID: string, rank: string, username: string, message: string) => {
+    this.client.on('chat:plotchat', (plotID: string, rank: string, username: string, message: string) => {
       this.emit('plotchat', plotID, rank, username, message);
     });
 
-    this.client.on('tpa', (rank: string, username: string) => {
+    this.client.on('chat:tpa', (rank: string, username: string) => {
       this.emit('tpa', rank, username);
     });
 
-    this.client.on('tpahere', (rank: string, username: string) => {
+    this.client.on('chat:tpahere', (rank: string, username: string) => {
       this.emit('tpahere', rank, username);
     });
 
-    this.client.on('moneydrop', (amount: string) => {
+    this.client.on('chat:moneydrop', (amount: string) => {
       this.emit('moneydrop', parseFloat(amount.replace(/,/g, '')));
     });
 
-    this.client.on('chatModeAlert', (rank: string, username: string, change: string) => {
+    this.client.on('chat:chatModeAlert', (rank: string, username: string, change: string) => {
       switch (change) {
         case 'auf normal gestellt':
           this.currentChatMode = ChatMode.NORMAL;
@@ -217,7 +217,7 @@ class Bot extends EventEmitter {
       this.emit('chatModeAlert', rank, username, change);
     });
 
-    this.client.on('slowChatAlert', () => {
+    this.client.on('chat:slowChatAlert', () => {
       // Sent messages too quickly.
       // This can usually happen only
       // shortly after connecting.
@@ -226,7 +226,7 @@ class Bot extends EventEmitter {
       console.warn('Sent messages too quickly!');
     });
 
-    this.client.on('commandSpamAlert', () => {
+    this.client.on('chat:commandSpamAlert', () => {
       // Sent commands too quickly.
       // This can usually happen only
       // shortly after connecting.
@@ -234,15 +234,15 @@ class Bot extends EventEmitter {
       console.warn('Sent commands too quickly!');
     });
 
-    this.client.on('itemClearAlert', (seconds: string) => {
+    this.client.on('chat:itemClearAlert', (seconds: string) => {
       this.emit('itemClearAlert', parseInt(seconds));
     });
 
-    this.client.on('mobClearAlert', (minutes: string) => {
+    this.client.on('chat:mobClearAlert', (minutes: string) => {
       this.emit('mobClearAlert', parseInt(minutes));
     });
 
-    this.client.on('redstoneAlert', (mode: string) => {
+    this.client.on('chat:redstoneAlert', (mode: string) => {
       let redstone = '';
       if (mode.includes('deaktiviert')) {
         redstone = RedstoneMode.OFF;
@@ -251,13 +251,14 @@ class Bot extends EventEmitter {
       }
       this.emit('redstoneAlert', redstone);
     });
-
-    this.client.once('spawn', () => {
-      this.registerEvents();
-      this.installPlugins();
-      // Ready once fully connected
-      // and spawned in hub.
-      this.emit('ready');
+    this.client.on('login', () => {
+      this.client.once('spawn', () => {
+        this.registerEvents();
+        this.installPlugins();
+        // Ready once fully connected
+        // and spawned in hub.
+        this.emit('ready');
+      });
     });
 
     this.client.on('playerCollect', (collector: any, collected: any) => {
