@@ -26,13 +26,13 @@
   "license": "MIT",
   "dependencies": {
     "minecraft-protocol": "github:PrismarineJS/node-minecraft-protocol",
-    "mineflayer": "^3.18.0",
+    "mineflayer": "^4.14.0",
     "mineflayer-navigate-promise": "^0.2.0",
     "vec3": "^0.1.7"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",
-    "prettier": "^2.6.1",
+    "prettier": "^3.0.3",
     "typescript": "^4.6.3"
   }
 }
