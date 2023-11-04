@@ -15,7 +15,7 @@ const defaultOptions = {
   setPortalTimeout: true,
   solveAfkChallenge: true,
   logMessages: true,
-  profilesFolder: path.join(__dirname, '../')
+  profilesFolder: path.join(__dirname, '../'),
 };
 
 class Bot extends EventEmitter {
@@ -48,9 +48,9 @@ class Bot extends EventEmitter {
       auth: this.options.auth,
       profilesFolder: this.options.profilesFolder,
       username: this.options.username,
-      password: this.options.password
+      password: this.options.password,
     };
-    
+
     this.client = mineflayer.createBot(botOptions);
 
     this.registerEvents();
@@ -169,17 +169,17 @@ class Bot extends EventEmitter {
       this.emit('kicked', reason, loggedIn);
     });
 
-    this.client.chatAddPattern(config.MSG_REGEXP, 'msg');
-    this.client.chatAddPattern(config.PLOTCHAT_REGEXP, 'plotchat');
-    this.client.chatAddPattern(config.CHATMODE_ALERT_REGEXP, 'chatModeAlert');
-    this.client.chatAddPattern(config.SLOWCHAT_ALERT_REGEXP, 'slowChatAlert');
-    this.client.chatAddPattern(config.COMMANDSPAM_ALERT_REGEXP, 'commandSpamAlert');
-    this.client.chatAddPattern(config.ITEMCLEAR_REGEXP, 'itemClearAlert');
-    this.client.chatAddPattern(config.MOBREMOVER_REGEXP, 'mobClearAlert');
-    this.client.chatAddPattern(config.REDSTONE_REGEXP, 'redstoneAlert');
-    this.client.chatAddPattern(config.TPA_REGEXP, 'tpa');
-    this.client.chatAddPattern(config.TPAHERE_REGEXP, 'tpahere');
-    this.client.chatAddPattern(config.MONEYDROP_REGEXP, 'moneydrop');
+    this.client.addChatPattern(config.MSG_REGEXP, 'msg');
+    this.client.addChatPattern(config.PLOTCHAT_REGEXP, 'plotchat');
+    this.client.addChatPattern(config.CHATMODE_ALERT_REGEXP, 'chatModeAlert');
+    this.client.addChatPattern(config.SLOWCHAT_ALERT_REGEXP, 'slowChatAlert');
+    this.client.addChatPattern(config.COMMANDSPAM_ALERT_REGEXP, 'commandSpamAlert');
+    this.client.addChatPattern(config.ITEMCLEAR_REGEXP, 'itemClearAlert');
+    this.client.addChatPattern(config.MOBREMOVER_REGEXP, 'mobClearAlert');
+    this.client.addChatPattern(config.REDSTONE_REGEXP, 'redstoneAlert');
+    this.client.addChatPattern(config.TPA_REGEXP, 'tpa');
+    this.client.addChatPattern(config.TPAHERE_REGEXP, 'tpahere');
+    this.client.addChatPattern(config.MONEYDROP_REGEXP, 'moneydrop');
 
     this.client.on('msg', (rank: string, username: string, message: string) => {
       this.emit('msg', rank, username, message);
@@ -332,25 +332,25 @@ class Bot extends EventEmitter {
       }
     });
 
-    this.client._client.on('chat', chatPacket => {
+    this.client._client.on('chat', (chatPacket) => {
       let msg;
       try {
-          msg = new ChatMessage(JSON.parse(chatPacket.message));
+        msg = new ChatMessage(JSON.parse(chatPacket.message));
       } catch (e) {
-          msg = new ChatMessage(chatPacket.message);
+        msg = new ChatMessage(chatPacket.message);
       }
 
       const codedText = jsonToCodedText(msg.json).trim();
       const text = stripCodes(codedText);
 
-      if(chatPacket.position != 2) {
+      if (chatPacket.position != 2) {
         if (typeof this.options.logMessages === 'boolean') {
           if (this.options.logMessages) {
             console.log(msg.toAnsi());
           }
         } else if (typeof this.options.logMessages === 'object') {
           const logMessagesOptions = this.options.logMessages as LogMessagesOptions;
-  
+
           if (logMessagesOptions.type === 'uncoded') {
             console.log(text);
           } else if (logMessagesOptions.type === 'encoded') {
@@ -369,7 +369,7 @@ class Bot extends EventEmitter {
       // Emit scoreboard balance updates.
       if (metadata.name === 'scoreboard_team' && data.name === 'money_value') {
         const currentBalance = data.prefix;
-        if(currentBalance != undefined && currentBalance.trim() != '' && !currentBalance.includes('Laden')) {
+        if (currentBalance != undefined && currentBalance.trim() != '' && !currentBalance.includes('Laden')) {
           this.emit('scoreboardBalance', currentBalance);
         }
       }
@@ -377,7 +377,7 @@ class Bot extends EventEmitter {
       // Emit scoreboard server updates.
       if (metadata.name === 'scoreboard_team' && data.name === 'server_value') {
         const serverName = data.prefix.replace(/\u00A7[0-9A-FK-OR]/gi, '');
-        if(serverName != undefined && serverName.trim() != '' && !serverName.includes('Laden')) {
+        if (serverName != undefined && serverName.trim() != '' && !serverName.includes('Laden')) {
           this.emit('scoreboardServer', serverName);
         }
       }
