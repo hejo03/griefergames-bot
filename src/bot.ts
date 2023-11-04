@@ -42,7 +42,7 @@ class Bot extends EventEmitter {
     const botOptions: any = {
       host: config.SERVER_IP,
       port: config.SERVER_PORT,
-      version: 1.8, // TODO: Test if 1.12 is more stable.
+      version: '1.8.9', // TODO: Test if 1.12 is more stable.
       checkTimeoutInterval: 30000,
       logErrors: false,
       auth: this.options.auth,
@@ -52,9 +52,6 @@ class Bot extends EventEmitter {
     };
 
     this.client = mineflayer.createBot(botOptions);
-
-    this.registerEvents();
-    this.installPlugins();
   }
 
   public isOnline(): boolean {
@@ -258,6 +255,8 @@ class Bot extends EventEmitter {
 
     this.client.on('connect', () => {
       this.client.once('spawn', () => {
+        this.registerEvents();
+        this.installPlugins();
         // Ready once fully connected
         // and spawned in hub.
         this.emit('ready');
